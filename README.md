@@ -1,0 +1,2 @@
+# mystictarot
+Tu destino revelado
