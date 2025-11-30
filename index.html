@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Tarot - Tu Destino Revelado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Variables de colores y fuentes */
+        :root {
+            --primary-color: #ff00ff;
+            --primary-dark: #cc00cc;
+            --primary-light: #ff66ff;
+            --secondary-color: #660066;
+            --accent-color: #ffccff;
+            --text-color: #ffffff;
+            --background-color: #1a001a;
+            --card-background: rgba(102, 0, 102, 0.5);
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 2.3;
+            filter: blur(1px) brightness(1.1);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 0, 26, 0.7), rgba(102, 0, 102, 0.4));
+        }
+
+        /* Fondo con elementos místicos */
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .mystic-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            border-radius: 50%;
+            box-shadow: 0 0 100px rgba(255, 0, 255, 0.1);
+            animation: pulse 15s infinite alternate;
+        }
+
+        .mystic-circle-2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(255, 0, 255, 0.15);
+            border-radius: 50%;
+            box-shadow: 0 0 80px rgba(255, 0, 255, 0.05);
+            animation: pulse 12s infinite alternate-reverse;
+        }
+
+        .floating-symbols {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-symbols span {
+            position: absolute;
+            color: rgba(255, 0, 255, 0.1);
+            font-size: 24px;
+            animation: float 20s infinite linear;
+        }
+
+        .floating-symbols span:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+        .floating-symbols span:nth-child(2) { top: 70%; left: 80%; animation-delay: 4s; }
+        .floating-symbols span:nth-child(3) { top: 30%; left: 85%; animation-delay: 8s; }
+        .floating-symbols span:nth-child(4) { top: 80%; left: 10%; animation-delay: 12s; }
+        .floating-symbols span:nth-child(5) { top: 50%; left: 90%; animation-delay: 16s; }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            margin: 10px 0;
+        }
+
+        .logo p {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80vh;
+            padding: 50px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .hero-content h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .hero-content p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .tarot-card-preview {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .card {
+            width: 120px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-dark));
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-back-pattern {
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            transform: rotateY(180deg);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .card-back span {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: white;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Sección de lecturas */
+        .readings {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .readings h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: var(--primary-light);
+            position: relative;
+        }
+
+        .readings h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+        }
+
+        .reading-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .reading-card {
+            background: var(--card-background);
+            padding: 30px;
+            border-radius: 15px;
+            width: 250px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .reading-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(255, 0, 255, 0.2);
+        }
+
+        .reading-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .reading-card h3 {
+            font-family: var(--font-heading);
+            margin-bottom: 15px;
+            color: var(--primary-light);
+        }
+
+        /* Sección de cartas del tarot */
+        .tarot-cards {
+            padding: 80px 0;
+        }
+
+        .tarot-cards h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-light);
+            position: relative;
+        }
+
+        .tarot-cards h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .tarot-card {
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .tarot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.2);
+        }
+
+        .tarot-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* Footer - Ocupa el 10% restante */
+        footer {
+            background: rgba(26, 0, 26, 0.9);
+            padding: 30px 0 15px;
+            height: 10vh;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 0, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            font-family: var(--font-heading);
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons span {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--card-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .social-icons span:hover {
+            background: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 0, 255, 0.1);
+            font-size: 0.8rem;
+            color: var(--accent-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--background-color);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        #reading-result {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .reading-cards {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .reading-card-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .card-icon-large {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-meaning {
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                margin-bottom: 50px;
+            }
+            
+            .reading-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .reading-cards {
+                flex-direction: column;
+            }
+            
+            .video-background, .background-elements {
+                height: 85vh;
+            }
+            
+            footer {
+                height: 15vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video de fondo translúcido -->
+    <div class="video-background">
+        <video autoplay muted loop id="bgVideo">
+            <!-- Reemplaza "tu-video.mp4" con la ruta a tu video -->
+            <source src="salvapantalla.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Fondo con elementos místicos -->
+        <div class="background-elements">
+            <div class="mystic-circle"></div>
+            <div class="mystic-circle-2"></div>
+            <div class="floating-symbols">
+                <span>☾</span>
+                <span>☽</span>
+                <span>✧</span>
+                <span>✦</span>
+                <span>✶</span>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <h1>Mystic Tarot</h1>
+                <div class="divider"></div>
+                <p>Tu destino revelado</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#lecturas">Lecturas</a></li>
+                    <li><a href="#cartas">Cartas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Sección principal -->
+        <main>
+            <section id="inicio" class="hero">
+                <div class="hero-content">
+                    <h2>Descubre los secretos que el universo tiene para ti</h2>
+                    <p>Sumérgete en el mundo del tarot y desvela los mensajes ocultos que te aguardan en las cartas.</p>
+                    <button id="btn-tirada" class="cta-button">Realiza tu tirada gratuita</button>
+                </div>
+                <div class="tarot-card-preview">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-back-pattern"></div>
+                            </div>
+                            <div class="card-back">
+                                <span>La Sacerdotisa</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-back-pattern"></div>
+                            </div>
+                            <div class="card-back">
+                                <span>El Mago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-back-pattern"></div>
+                            </div>
+                            <div class="card-back">
+                                <span>La Rueda de la Fortuna</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="lecturas" class="readings">
+                <h2>Tipos de Lectura</h2>
+                <div class="reading-options">
+                    <div class="reading-card">
+                        <div class="reading-icon">☾</div>
+                        <h3>Tirada de 3 Cartas</h3>
+                        <p>Pasado, presente y futuro en una sola lectura.</p>
+                    </div>
+                    <div class="reading-card">
+                        <div class="reading-icon">☀</div>
+                        <h3>Tirada Celta</h3>
+                        <p>Una visión completa de tu situación actual.</p>
+                    </div>
+                    <div class="reading-card">
+                        <div class="reading-icon">✧</div>
+                        <h3>Tirada del Amor</h3>
+                        <p>Enfocada en relaciones y conexiones emocionales.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="cartas" class="tarot-cards">
+                <h2>Explora las Cartas del Tarot</h2>
+                <div class="cards-grid">
+                    <!-- Las cartas se generarán con JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Footer - Ocupa el 10% restante de la página -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Mystic Tarot</h3>
+                    <p>Tu portal al mundo del tarot y la espiritualidad.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>info@mystictarot.com</p>
+                    <p>+34 123 456 789</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-icons">
+                        <span>FB</span>
+                        <span>IG</span>
+                        <span>YT</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Mystic Tarot. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal para la tirada -->
+    <div id="reading-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Tu Tirada de Tarot</h2>
+            <div id="reading-result">
+                <!-- Resultado de la tirada -->
+            </div>
+            <button id="new-reading" class="cta-button">Nueva Tirada</button>
+        </div>
+    </div>
+    
+    <script>
+        // Datos de las cartas del tarot
+        const tarotCards = [
+            { name: "El Loco", icon: "🃏", description: "Nuevos comienzos, espontaneidad, aventura" },
+            { name: "El Mago", icon: "🧙", description: "Manifestación, recursos, poder personal" },
+            { name: "La Sacerdotisa", icon: "🌙", description: "Intuición, misterio, sabiduría interior" },
+            { name: "La Emperatriz", icon: "👑", description: "Abundancia, creatividad, naturaleza" },
+            { name: "El Emperador", icon: "🏛️", description: "Autoridad, estructura, control" },
+            { name: "El Hierofante", icon: "⛪", description: "Tradición, espiritualidad, creencias" },
+            { name: "Los Enamorados", icon: "💑", description: "Amor, unión, decisiones" },
+            { name: "El Carro", icon: "🛡️", description: "Determinación, control, progreso" },
+            { name: "La Fuerza", icon: "🦁", description: "Coraje, paciencia, control interno" },
+            { name: "El Ermitaño", icon: "🧓", description: "Introspección, soledad, guía" },
+            { name: "La Rueda de la Fortuna", icon: "🔄", description: "Ciclos, destino, cambio" },
+            { name: "La Justicia", icon: "⚖️", description: "Equilibrio, verdad, justicia" },
+            { name: "El Colgado", icon: "🙃", description: "Sacrificio, perspectiva, rendición" },
+            { name: "La Muerte", icon: "💀", description: "Transformación, finales, nuevos comienzos" },
+            { name: "La Templanza", icon: "⚗️", description: "Moderación, equilibrio, paciencia" },
+            { name: "El Diablo", icon: "😈", description: "Ataduras, tentación, materialismo" },
+            { name: "La Torre", icon: "🏰", description: "Cambio repentino, revelación, caos" },
+            { name: "La Estrella", icon: "⭐", description: "Esperanza, inspiración, serenidad" },
+            { name: "La Luna", icon: "🌕", description: "Ilusión, miedo, subconsciente" },
+            { name: "El Sol", icon: "☀️", description: "Alegría, éxito, vitalidad" },
+            { name: "El Juicio", icon: "📯", description: "Renacimiento, llamado interno, absolución" },
+            { name: "El Mundo", icon: "🌍", description: "Completitud, logro, viaje" }
+        ];
+
+        // Inicialización cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generar cartas en la sección de exploración
+            generateTarotCards();
+            
+            // Configurar eventos
+            setupEventListeners();
+            
+            // Iniciar animaciones
+            animateHeroCards();
+            createMysticParticles();
+        });
+
+        // Generar las cartas del tarot en la sección correspondiente
+        function generateTarotCards() {
+            const cardsGrid = document.querySelector('.cards-grid');
+            
+            tarotCards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'tarot-card';
+                cardElement.innerHTML = `
+                    <div class="tarot-card-icon">${card.icon}</div>
+                    <h3>${card.name}</h3>
+                `;
+                
+                cardElement.addEventListener('click', () => {
+                    showCardMeaning(card);
+                });
+                
+                cardsGrid.appendChild(cardElement);
+            });
+        }
+
+        // Mostrar el significado de una carta
+        function showCardMeaning(card) {
+            const modal = document.getElementById('reading-modal');
+            const resultDiv = document.getElementById('reading-result');
+            
+            resultDiv.innerHTML = `
+                <div class="card-meaning">
+                    <div class="card-icon-large">${card.icon}</div>
+                    <h3>${card.name}</h3>
+                    <p>${card.description}</p>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Botón de tirada gratuita
+            const btnTirada = document.getElementById('btn-tirada');
+            btnTirada.addEventListener('click', performReading);
+            
+            // Botón de nueva tirada en el modal
+            const newReadingBtn = document.getElementById('new-reading');
+            newReadingBtn.addEventListener('click', performReading);
+            
+            // Cerrar modal
+            const closeBtn = document.querySelector('.close');
+            closeBtn.addEventListener('click', () => {
+                document.getElementById('reading-modal').style.display = 'none';
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', (event) => {
+                const modal = document.getElementById('reading-modal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Realizar una tirada de tarot
+        function performReading() {
+            const modal = document.getElementById('reading-modal');
+            const resultDiv = document.getElementById('reading-result');
+            
+            // Seleccionar 3 cartas aleatorias
+            const selectedCards = [];
+            const usedIndexes = new Set();
+            
+            while (selectedCards.length < 3 && usedIndexes.size < tarotCards.length) {
+                const randomIndex = Math.floor(Math.random() * tarotCards.length);
+                if (!usedIndexes.has(randomIndex)) {
+                    selectedCards.push(tarotCards[randomIndex]);
+                    usedIndexes.add(randomIndex);
+                }
+            }
+            
+            // Mostrar resultado
+            resultDiv.innerHTML = `
+                <div class="reading-cards">
+                    <div class="reading-card-item">
+                        <div class="card-icon-large">${selectedCards[0].icon}</div>
+                        <h4>Pasado</h4>
+                        <h3>${selectedCards[0].name}</h3>
+                        <p>${selectedCards[0].description}</p>
+                    </div>
+                    <div class="reading-card-item">
+                        <div class="card-icon-large">${selectedCards[1].icon}</div>
+                        <h4>Presente</h4>
+                        <h3>${selectedCards[1].name}</h3>
+                        <p>${selectedCards[1].description}</p>
+                    </div>
+                    <div class="reading-card-item">
+                        <div class="card-icon-large">${selectedCards[2].icon}</div>
+                        <h4>Futuro</h4>
+                        <h3>${selectedCards[2].name}</h3>
+                        <p>${selectedCards[2].description}</p>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Animación de las cartas en la sección hero
+        function animateHeroCards() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach((card, index) => {
+                // Animación inicial escalonada
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 300);
+                
+                // Animación de flotación continua
+                setInterval(() => {
+                    card.style.transform = `translateY(${Math.sin(Date.now() / 1000 + index) * 10}px)`;
+                }, 50);
+            });
+        }
+
+        // Efecto de partículas místicas
+        function createMysticParticles() {
+            const particlesContainer = document.querySelector('.floating-symbols');
+            
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('span');
+                const symbols = ['☾', '☽', '✧', '✦', '✶', '♡', '☆'];
+                const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                particle.textContent = randomSymbol;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.fontSize = `${Math.random() * 20 + 10}px`;
+                particle.style.opacity = `${Math.random() * 0.2 + 0.05}`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html>
